@@ -16,12 +16,12 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-public class publishController {
+public class SnsController {
 
     AWSConfig awsConfig;
     CredentialService credentialService;
 
-    public publishController(AWSConfig awsConfig, CredentialService credentialService) {
+    public SnsController(AWSConfig awsConfig, CredentialService credentialService) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
     }
