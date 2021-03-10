@@ -4,7 +4,6 @@ import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.service.CredentialService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -26,7 +25,7 @@ public class publishController {
 
     @GetMapping("/publish")
     public String publish() throws URISyntaxException {
-        SnsClient snsClient = getSnsClient();
+        SnsClient snsClient = credentialService.getSnsClient();
         final PublishRequest publishRequest = PublishRequest.builder()
                 .topicArn(awsConfig.getSnsTopicARN())
                 .subject("HTTP ENDPOINT TEST MESSAGE")
@@ -40,12 +39,6 @@ public class publishController {
 
     }
 
-    private SnsClient getSnsClient() {
-        return SnsClient.builder()
-                .credentialsProvider(
-                        credentialService.getAwsCredentials(awsConfig.getAwsAccessKey(), awsConfig.getAwsSecretKey())
-                ).region(Region.AP_NORTHEAST_2)
-                .build();
-    }
+
 
 }
