@@ -65,6 +65,7 @@ public class SnsController {
 
     @PostMapping("/publish")
     public String publish(@RequestParam String topicArn, @RequestBody Map<String, Object> message) {
+        // TODO: snsClient 의 topicArn 과 publish 의 topicArn 이 달라도 문제없는지 검증
         SnsClient snsClient = credentialService.getSnsClient();
         final PublishRequest publishRequest = PublishRequest.builder()
                 .topicArn(topicArn)
