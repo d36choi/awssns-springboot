@@ -24,6 +24,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'software.amazon.awssdk:sns' // We only need to get SNS SDK in our case
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-aws-messaging', version: '2.2.1.RELEASE'
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: '2.2.1.RELEASE'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

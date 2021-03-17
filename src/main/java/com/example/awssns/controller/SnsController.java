@@ -1,7 +1,9 @@
 package com.example.awssns.controller;
 
 import com.example.awssns.configuration.AWSConfig;
+import com.example.awssns.entity.PublishMessageRequest;
 import com.example.awssns.service.CredentialService;
+import com.example.awssns.service.MongodbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,12 @@ public class SnsController {
 
     AWSConfig awsConfig;
     CredentialService credentialService;
+    MongodbService mongodbService;
 
-    public SnsController(AWSConfig awsConfig, CredentialService credentialService) {
+    public SnsController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
+        this.mongodbService = mongodbService;
     }
 
     @PostMapping("/createTopic")
@@ -72,9 +76,19 @@ public class SnsController {
                 .subject("HTTP ENDPOINT TEST MESSAGE")
                 .message(message.toString())
                 .build();
-        PublishResponse publishResponse = snsClient.publish(publishRequest);
+        PublishResponse publishResponse = null;
+        try {
+            publishResponse = snsClient.publish(publishRequest);
+        } catch (NotFoundException e) {
+            return "Topic does not Exist";
+        }
+
         log.info("message status:" + publishResponse.sdkHttpResponse().statusCode());
         snsClient.close();
+
+        mongodbService.insert(
+                PublishMessageRequest.of(publishRequest)
+        );
 
         return "sent MSG ID = " + publishResponse.messageId();
 
