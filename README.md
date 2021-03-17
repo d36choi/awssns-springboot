@@ -19,4 +19,5 @@ application.properties 의 항목들을 본인의 환경에 맞게 입력해야 
 you should add appropriate value in application.properties's key-value lines.
 
 ## guideline
-[[AWS] amazon SNS + Spring Boot 이용한 메시지 서비스 만들기](https://choichumji.tistory.com/123)
+[[AWS] amazon SNS + Spring Boot 이용한 메시지 서비스 만들기](https://choichumji.tistory.com/123)  
+[SNS 메시지 리스너](https://github.com/d36choi/awssns-springboot-listener)
