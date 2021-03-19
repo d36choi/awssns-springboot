@@ -8,9 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AWSConfig {
 
-    @Value("${sns.topic.arn}")
-    private String snsTopicARN;
-
     @Value("${aws.accessKey}")
     private String awsAccessKey;
 

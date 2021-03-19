@@ -1,6 +1,7 @@
 package com.example.awssns.controller;
 
 import com.example.awssns.configuration.AWSConfig;
+import com.example.awssns.pojo.SubscriptionData;
 import com.example.awssns.service.CredentialService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,15 +41,15 @@ public class SnsController {
         log.info("topic name = " + createTopicResponse.topicArn());
         log.info("topic list = " + snsClient.listTopics());
         snsClient.close();
-        return new ResponseEntity<>("TOPIC CREATING SUCCESS", HttpStatus.OK);
+        return new ResponseEntity<>(createTopicResponse.topicArn(), HttpStatus.OK);
     }
 
     @PostMapping("/subscribe")
-    public ResponseEntity<String> subscribe(@RequestParam final String endpoint, @RequestParam final String topicArn) {
+    public ResponseEntity<String> subscribe(@RequestBody SubscriptionData subscriptionData) {
         final SubscribeRequest subscribeRequest = SubscribeRequest.builder()
-                .protocol("https")
-                .topicArn(topicArn)
-                .endpoint(endpoint)
+                .protocol(subscriptionData.getProtocol())
+                .topicArn(subscriptionData.getTopicArn())
+                .endpoint(subscriptionData.getEndpoint())
                 .build();
         SnsClient snsClient = credentialService.getSnsClient();
         final SubscribeResponse subscribeResponse = snsClient.subscribe(subscribeRequest);
@@ -59,13 +60,12 @@ public class SnsController {
         log.info("topicARN to subscribe = " + subscribeResponse.subscriptionArn());
         log.info("subscription list = " + snsClient.listSubscriptions());
         snsClient.close();
-        return new ResponseEntity<>("TOPIC SUBSCRIBE SUCCESS", HttpStatus.OK);
+        return new ResponseEntity<>(subscribeResponse.subscriptionArn(), HttpStatus.OK);
     }
 
 
     @PostMapping("/publish")
     public String publish(@RequestParam String topicArn, @RequestBody Map<String, Object> message) {
-        // TODO: snsClient 의 topicArn 과 publish 의 topicArn 이 달라도 문제없는지 검증
         SnsClient snsClient = credentialService.getSnsClient();
         final PublishRequest publishRequest = PublishRequest.builder()
                 .topicArn(topicArn)

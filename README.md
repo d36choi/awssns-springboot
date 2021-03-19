@@ -9,14 +9,14 @@ spring boot API server for Amazon SNS client request
 - publish message
 
 ## MUST DO
+`resources/application-keys.properties`
 ```properties
-sns.topic.arn=
 aws.accessKey=
 aws.secretKey=
-aws.region=
 ```
-application.properties 의 항목들을 본인의 환경에 맞게 입력해야 합니다.  
-you should add appropriate value in application.properties's key-value lines.
+application-keys.properties를 생성 의 항목들을 본인의 환경에 맞게 입력해야 합니다.  
+you should add appropriate key-value in application-keys.properties for yourself.
+
 
 ## guideline
 [[AWS] amazon SNS + Spring Boot 이용한 메시지 서비스 만들기](https://choichumji.tistory.com/123)  
