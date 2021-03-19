@@ -15,13 +15,13 @@ import software.amazon.awssdk.services.sns.model.*;
 @Slf4j
 @RequestMapping("/topic")
 @RestController
-public class SnsController {
+public class TopicController {
 
     AWSConfig awsConfig;
     CredentialService credentialService;
     MongodbService mongodbService;
 
-    public SnsController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
+    public TopicController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
         this.mongodbService = mongodbService;
@@ -42,6 +42,21 @@ public class SnsController {
         log.info("topic list = " + snsClient.listTopics());
         snsClient.close();
         return new ResponseEntity<>(createTopicResponse.topicArn(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@RequestParam final String topicArn) {
+        final DeleteTopicRequest deleteTopicRequest = DeleteTopicRequest.builder()
+                .topicArn(topicArn)
+                .build();
+        SnsClient snsClient = credentialService.getSnsClient();
+        final DeleteTopicResponse response = snsClient.deleteTopic(deleteTopicRequest);
+
+        if (!response.sdkHttpResponse().isSuccessful()) {
+            throw getResponseStatusException(response);
+        }
+        snsClient.close();
+        return new ResponseEntity<>(String.format("%s removed.",topicArn), HttpStatus.OK);
     }
 
     @PostMapping("/subscribe")
