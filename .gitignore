@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### for security ###
-src/main/resources/application.properties
+src/main/resources/application-keys.properties
