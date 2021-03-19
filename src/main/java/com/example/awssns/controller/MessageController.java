@@ -7,7 +7,6 @@ import com.example.awssns.service.MongodbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.sns.SnsClient;
-import software.amazon.awssdk.services.sns.model.NotFoundException;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 import software.amazon.awssdk.services.sns.model.PublishResponse;
 
@@ -38,8 +37,8 @@ public class MessageController {
         PublishResponse publishResponse = null;
         try {
             publishResponse = snsClient.publish(publishRequest);
-        } catch (NotFoundException e) {
-            return "Topic does not Exist";
+        } catch (Exception e) {
+            return e.getMessage().trim();
         }
 
         log.info("message status:" + publishResponse.sdkHttpResponse().statusCode());
