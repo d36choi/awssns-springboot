@@ -2,22 +2,18 @@ package com.example.awssns.controller;
 
 import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.pojo.SubscriptionData;
-import com.example.awssns.entity.PublishMessageRequest;
 import com.example.awssns.service.CredentialService;
 import com.example.awssns.service.MongodbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.*;
-import java.util.Map;
 
 @Slf4j
+@RequestMapping("/topic")
 @RestController
 public class SnsController {
 
@@ -31,7 +27,7 @@ public class SnsController {
         this.mongodbService = mongodbService;
     }
 
-    @PostMapping("/createTopic")
+    @PostMapping("/create")
     public ResponseEntity<String> createTopic(@RequestParam final String topicName) {
         final CreateTopicRequest createTopicRequest = CreateTopicRequest.builder()
                 .name(topicName)
@@ -65,33 +61,6 @@ public class SnsController {
         log.info("subscription list = " + snsClient.listSubscriptions());
         snsClient.close();
         return new ResponseEntity<>(subscribeResponse.subscriptionArn(), HttpStatus.OK);
-    }
-
-
-    @PostMapping("/publish")
-    public String publish(@RequestParam String topicArn, @RequestBody Map<String, Object> message) {
-        SnsClient snsClient = credentialService.getSnsClient();
-        final PublishRequest publishRequest = PublishRequest.builder()
-                .topicArn(topicArn)
-                .subject("HTTP ENDPOINT TEST MESSAGE")
-                .message(message.toString())
-                .build();
-        PublishResponse publishResponse = null;
-        try {
-            publishResponse = snsClient.publish(publishRequest);
-        } catch (NotFoundException e) {
-            return "Topic does not Exist";
-        }
-
-        log.info("message status:" + publishResponse.sdkHttpResponse().statusCode());
-        snsClient.close();
-
-        mongodbService.insert(
-                PublishMessageRequest.of(publishRequest)
-        );
-
-        return "sent MSG ID = " + publishResponse.messageId();
-
     }
 
     private ResponseStatusException getResponseStatusException(SnsResponse response) {

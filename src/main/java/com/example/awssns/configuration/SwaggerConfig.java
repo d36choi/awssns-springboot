@@ -18,7 +18,7 @@ public class SwaggerConfig {
     public Docket commonApi() {
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("AWS SNS Publisher")
-                .description("SNS 서비스 퍼블리셔 앱의 API 설명")
+                .description("how to use SNS Publisher API")
                 .version("1.0")
                 .build();
 
