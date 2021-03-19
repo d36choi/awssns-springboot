@@ -11,8 +11,8 @@ import software.amazon.awssdk.services.sns.model.PublishRequest;
 public class PublishMessageRequest {
 
     @Id
-    public String id;
-    public String request;
+    private String id;
+    private String request;
 
     public PublishMessageRequest(PublishRequest request) {
         this.request = request.toString();

@@ -25,10 +25,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'software.amazon.awssdk:sns' // We only need to get SNS SDK in our case
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	compile 'org.springframework.boot:spring-boot-devtools'
 
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.5.RELEASE'
 
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-aws-messaging', version: '2.2.1.RELEASE'
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: '2.2.1.RELEASE'

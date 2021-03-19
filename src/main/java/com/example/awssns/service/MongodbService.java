@@ -19,6 +19,10 @@ public class MongodbService {
         publishRequestRepository.insert(publishMessageRequest);
 
     }
+
+    public void deleteById(String id) {
+        publishRequestRepository.deleteById(id);
+    }
     public List<PublishMessageRequest> getAllMessages() {
         return publishRequestRepository.findAll();
     }
