@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.*;
 
+import java.util.Map;
+
 @Slf4j
 @RequestMapping("/topic")
 @RestController
@@ -60,11 +62,11 @@ public class TopicController {
     }
 
     @PostMapping("/subscribe")
-    public ResponseEntity<String> subscribe(@RequestBody SubscriptionData subscriptionData) {
+    public ResponseEntity<String> subscribe(@RequestBody SubscriptionData payload) {
         final SubscribeRequest subscribeRequest = SubscribeRequest.builder()
-                .protocol(subscriptionData.getProtocol())
-                .topicArn(subscriptionData.getTopicArn())
-                .endpoint(subscriptionData.getEndpoint())
+                .protocol(payload.getProtocol())
+                .topicArn(payload.getTopicArn())
+                .endpoint(payload.getEndpoint())
                 .build();
         SnsClient snsClient = credentialService.getSnsClient();
         final SubscribeResponse subscribeResponse = snsClient.subscribe(subscribeRequest);
@@ -77,6 +79,24 @@ public class TopicController {
         snsClient.close();
         return new ResponseEntity<>(subscribeResponse.subscriptionArn(), HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping("/detail")
+    public ResponseEntity<Map<String, String>> topicDetail(@RequestParam String topicArn) {
+        final GetTopicAttributesRequest request = GetTopicAttributesRequest.builder()
+                .topicArn(topicArn)
+                .build();
+
+        SnsClient snsClient = credentialService.getSnsClient();
+        final GetTopicAttributesResponse response = snsClient.getTopicAttributes(request);
+
+        if (!response.sdkHttpResponse().isSuccessful()) {
+            throw getResponseStatusException(response);
+        }
+        snsClient.close();
+        return new ResponseEntity<>(response.attributes(), HttpStatus.OK);
+    }
+
 
     private ResponseStatusException getResponseStatusException(SnsResponse response) {
         return new ResponseStatusException(
