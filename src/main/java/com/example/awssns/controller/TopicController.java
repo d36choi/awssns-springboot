@@ -2,36 +2,34 @@ package com.example.awssns.controller;
 
 import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.pojo.SubscriptionData;
-import com.example.awssns.entity.PublishMessageRequest;
 import com.example.awssns.service.CredentialService;
 import com.example.awssns.service.MongodbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.*;
+
 import java.util.Map;
 
 @Slf4j
+@RequestMapping("/topic")
 @RestController
-public class SnsController {
+public class TopicController {
 
     AWSConfig awsConfig;
     CredentialService credentialService;
     MongodbService mongodbService;
 
-    public SnsController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
+    public TopicController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
         this.mongodbService = mongodbService;
     }
 
-    @PostMapping("/createTopic")
+    @PostMapping("/create")
     public ResponseEntity<String> createTopic(@RequestParam final String topicName) {
         final CreateTopicRequest createTopicRequest = CreateTopicRequest.builder()
                 .name(topicName)
@@ -48,12 +46,27 @@ public class SnsController {
         return new ResponseEntity<>(createTopicResponse.topicArn(), HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@RequestParam final String topicArn) {
+        final DeleteTopicRequest deleteTopicRequest = DeleteTopicRequest.builder()
+                .topicArn(topicArn)
+                .build();
+        SnsClient snsClient = credentialService.getSnsClient();
+        final DeleteTopicResponse response = snsClient.deleteTopic(deleteTopicRequest);
+
+        if (!response.sdkHttpResponse().isSuccessful()) {
+            throw getResponseStatusException(response);
+        }
+        snsClient.close();
+        return new ResponseEntity<>(String.format("%s removed.",topicArn), HttpStatus.OK);
+    }
+
     @PostMapping("/subscribe")
-    public ResponseEntity<String> subscribe(@RequestBody SubscriptionData subscriptionData) {
+    public ResponseEntity<String> subscribe(@RequestBody SubscriptionData payload) {
         final SubscribeRequest subscribeRequest = SubscribeRequest.builder()
-                .protocol(subscriptionData.getProtocol())
-                .topicArn(subscriptionData.getTopicArn())
-                .endpoint(subscriptionData.getEndpoint())
+                .protocol(payload.getProtocol())
+                .topicArn(payload.getTopicArn())
+                .endpoint(payload.getEndpoint())
                 .build();
         SnsClient snsClient = credentialService.getSnsClient();
         final SubscribeResponse subscribeResponse = snsClient.subscribe(subscribeRequest);
@@ -67,32 +80,23 @@ public class SnsController {
         return new ResponseEntity<>(subscribeResponse.subscriptionArn(), HttpStatus.OK);
     }
 
-
-    @PostMapping("/publish")
-    public String publish(@RequestParam String topicArn, @RequestBody Map<String, Object> message) {
-        SnsClient snsClient = credentialService.getSnsClient();
-        final PublishRequest publishRequest = PublishRequest.builder()
+    @ResponseBody
+    @GetMapping("/detail")
+    public ResponseEntity<Map<String, String>> topicDetail(@RequestParam String topicArn) {
+        final GetTopicAttributesRequest request = GetTopicAttributesRequest.builder()
                 .topicArn(topicArn)
-                .subject("HTTP ENDPOINT TEST MESSAGE")
-                .message(message.toString())
                 .build();
-        PublishResponse publishResponse = null;
-        try {
-            publishResponse = snsClient.publish(publishRequest);
-        } catch (NotFoundException e) {
-            return "Topic does not Exist";
+
+        SnsClient snsClient = credentialService.getSnsClient();
+        final GetTopicAttributesResponse response = snsClient.getTopicAttributes(request);
+
+        if (!response.sdkHttpResponse().isSuccessful()) {
+            throw getResponseStatusException(response);
         }
-
-        log.info("message status:" + publishResponse.sdkHttpResponse().statusCode());
         snsClient.close();
-
-        mongodbService.insert(
-                PublishMessageRequest.of(publishRequest)
-        );
-
-        return "sent MSG ID = " + publishResponse.messageId();
-
+        return new ResponseEntity<>(response.attributes(), HttpStatus.OK);
     }
+
 
     private ResponseStatusException getResponseStatusException(SnsResponse response) {
         return new ResponseStatusException(
