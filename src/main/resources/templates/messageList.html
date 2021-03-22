@@ -5,29 +5,31 @@
 </head>
 <body>
 <div th:replace="fragments/common :: header"></div>
-<table class="table rounded">
-    <caption>Message Request List</caption>
-    <thead>
-        <tr class="table-primary">
-            <th scope="col">index</th>
-            <th scope="col">ID</th>
-            <th scope="col">TOPIC ARN</th>
-            <th scope="col">MSG</th>
-            <th scope="col">DELETE</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="req,index : ${requests}">
-            <td th:text="${index.index+1}"></td>
-            <td th:text="${req.id}"></td>
-            <td th:text="${req.topicArn}"></td>
-            <td th:text="${req.message}"></td>
-            <td>
-                <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">X</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="container-fluid">
+    <table class="table rounded">
+        <caption>Message Request List</caption>
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">index</th>
+                <th scope="col">ID</th>
+                <th scope="col">TOPIC ARN</th>
+                <th scope="col">MSG</th>
+                <th scope="col">DELETE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="req,index : ${requests}">
+                <td th:text="${index.index+1}"></td>
+                <td th:text="${req.id}"></td>
+                <td th:text="${req.topicArn}"></td>
+                <td th:text="${req.message}"></td>
+                <td>
+                    <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">X</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 <div th:replace="fragments/common :: footer"></div>
 
 </body>
