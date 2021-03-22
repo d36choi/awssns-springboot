@@ -1,7 +1,7 @@
 package com.example.awssns.controller;
 
-import com.example.awssns.entity.PublishMessageRequest;
-import com.example.awssns.service.MongodbService;
+import com.example.awssns.entity.MessageRequest;
+import com.example.awssns.service.MessageRequestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +15,16 @@ import java.util.List;
 @RestController
 public class MongoController {
 
-    MongodbService mongodbService;
+    MessageRequestService messageRequestService;
 
-    public MongoController(MongodbService mongodbService) {
-        this.mongodbService = mongodbService;
+    public MongoController(MessageRequestService messageRequestService) {
+        this.messageRequestService = messageRequestService;
     }
 
     @ResponseBody
     @GetMapping("/findAll")
-    public ResponseEntity<List<PublishMessageRequest>> findAll() {
-        List<PublishMessageRequest> messages = mongodbService.getAllMessages();
-        return new ResponseEntity<>( messages,HttpStatus.OK);
+    public ResponseEntity<List<MessageRequest>> findAll() {
+        List<MessageRequest> messages = messageRequestService.findAll();
+        return new ResponseEntity<>(messages,HttpStatus.OK);
     }
 }

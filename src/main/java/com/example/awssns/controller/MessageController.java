@@ -1,9 +1,8 @@
 package com.example.awssns.controller;
 
 import com.example.awssns.configuration.AWSConfig;
-import com.example.awssns.entity.PublishMessageRequest;
 import com.example.awssns.service.CredentialService;
-import com.example.awssns.service.MongodbService;
+import com.example.awssns.service.MessageRequestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -18,12 +17,12 @@ import java.util.Map;
 public class MessageController {
     AWSConfig awsConfig;
     CredentialService credentialService;
-    MongodbService mongodbService;
+    MessageRequestService messageRequestService;
 
-    public MessageController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
+    public MessageController(AWSConfig awsConfig, CredentialService credentialService, MessageRequestService messageRequestService) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
-        this.mongodbService = mongodbService;
+        this.messageRequestService = messageRequestService;
     }
 
     @PostMapping("/publish")
@@ -44,9 +43,8 @@ public class MessageController {
         log.info("message status:" + publishResponse.sdkHttpResponse().statusCode());
         snsClient.close();
 
-        mongodbService.insert(
-                PublishMessageRequest.of(publishRequest)
-        );
+        messageRequestService.insert(publishRequest);
+        log.info(messageRequestService.findAll().toString());
 
         return "sent MSG ID = " + publishResponse.messageId();
     }

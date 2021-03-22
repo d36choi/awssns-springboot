@@ -3,7 +3,6 @@ package com.example.awssns.controller;
 import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.pojo.SubscriptionData;
 import com.example.awssns.service.CredentialService;
-import com.example.awssns.service.MongodbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +20,10 @@ public class TopicController {
 
     AWSConfig awsConfig;
     CredentialService credentialService;
-    MongodbService mongodbService;
 
-    public TopicController(AWSConfig awsConfig, CredentialService credentialService, MongodbService mongodbService) {
+    public TopicController(AWSConfig awsConfig, CredentialService credentialService) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
-        this.mongodbService = mongodbService;
     }
 
     @PostMapping("/create")

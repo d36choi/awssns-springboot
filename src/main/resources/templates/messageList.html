@@ -8,23 +8,25 @@
 
 </head>
 <body>
-<div class="bg-green">
-    <table class="table">
+<div class="container-lg mt-3">
+    <table class="table rounded">
         <thead>
-            <tr>
+            <tr class="table-primary">
                 <th scope="col">index</th>
                 <th scope="col">ID</th>
-                <th scope="col">REQ</th>
+                <th scope="col">TOPIC ARN</th>
+                <th scope="col">MSG</th>
                 <th scope="col">DELETE</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="msg,index : ${messages}">
-                <td  scope="row" th:text="${index.index+1}"></td>
-                <td th:text="${msg.id}"></td>
-                <td th:text="${msg.request}"></td>
+            <tr th:each="req,index : ${requests}">
+                <td th:text="${index.index+1}"></td>
+                <td th:text="${req.id}"></td>
+                <td th:text="${req.topicArn}"></td>
+                <td th:text="${req.message}"></td>
                 <td>
-                    <a th:href="@{list/delete(id=${msg.id})}" class="btn btn-danger">X</a>
+                    <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">X</a>
                 </td>
             </tr>
         </tbody>
