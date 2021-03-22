@@ -3,3 +3,8 @@ html {
     background: url("/static/images/logo.png") no-repeat fixed center center;
     background-size: 100% auto;
 }
+
+logo {
+    width: 30px;
+    height: 30px;
+}
