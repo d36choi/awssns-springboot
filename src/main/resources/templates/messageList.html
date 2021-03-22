@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>message List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<head th:replace="fragments/common :: html-head">
 
 </head>
 <body>
-<div class="container-lg mt-3">
-    <table class="table rounded">
-        <caption>Message Request List</caption>
-        <thead>
-            <tr class="table-primary">
-                <th scope="col">index</th>
-                <th scope="col">ID</th>
-                <th scope="col">TOPIC ARN</th>
-                <th scope="col">MSG</th>
-                <th scope="col">DELETE</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="req,index : ${requests}">
-                <td th:text="${index.index+1}"></td>
-                <td th:text="${req.id}"></td>
-                <td th:text="${req.topicArn}"></td>
-                <td th:text="${req.message}"></td>
-                <td>
-                    <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">X</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<div th:replace="fragments/common :: header"></div>
+<table class="table rounded">
+    <caption>Message Request List</caption>
+    <thead>
+        <tr class="table-primary">
+            <th scope="col">index</th>
+            <th scope="col">ID</th>
+            <th scope="col">TOPIC ARN</th>
+            <th scope="col">MSG</th>
+            <th scope="col">DELETE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="req,index : ${requests}">
+            <td th:text="${index.index+1}"></td>
+            <td th:text="${req.id}"></td>
+            <td th:text="${req.topicArn}"></td>
+            <td th:text="${req.message}"></td>
+            <td>
+                <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">X</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div th:replace="fragments/common :: footer"></div>
+
 </body>
 </html>
