@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/common :: html-head">
+</head>
+<body>
+    <div th:replace="fragments/common:: header"></div>
+    <div class="container">
+        <div class="row">
+            <table class="table rounded">
+                <caption>Topic List</caption>
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col">index</th>
+                    <th scope="col">TOPIC ARN</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="topic,index : ${topics}">
+                    <td th:text="${index.index+1}"></td>
+                    <td th:text="${topic.topicArn()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <table class="table table-responsive">
+                <caption>Subscription List</caption>
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col">index</th>
+                    <th scope="col">SUBSCRIPTION ARN</th>
+                    <th scope="col">ENDPOINT</th>
+                    <th scope="col">TOPIC ARN</th>
+                    <th scope="col">PROTOCOL</th>
+                    <th scope="col">OWNER</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subs,index : ${subscriptions}">
+                    <td th:text="${index.index+1}"></td>
+                    <td th:text="${subs.subscriptionArn()}"></td>
+                    <td th:text="${subs.endpoint()}"></td>
+                    <td th:text="${subs.topicArn()}"></td>
+                    <td th:text="${subs.protocol()}"></td>
+                    <td th:text="${subs.owner()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div th:replace="fragments/common:: footer"></div>
+</body>
+</html>
