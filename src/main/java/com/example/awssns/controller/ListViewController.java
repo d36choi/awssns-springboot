@@ -21,7 +21,7 @@ public class ListViewController {
         this.messageRequestService = messageRequestService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String listTest(Model model) {
         List<MessageRequest> requests = messageRequestService.findAll();
         model.addAttribute("requests",requests);
