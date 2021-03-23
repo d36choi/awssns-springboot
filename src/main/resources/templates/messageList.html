@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/common :: html-head">
     <meta charset="UTF-8">
-    <title>message List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
 </head>
 <body>
-<div class="container-lg mt-3">
+<div th:replace="fragments/common :: header"></div>
+<div class="container-fluid mt-5 pl-5 pr-5">
+    <h2 style="font-weight: bold">메시지 리스트</h2>
+    <p>현재 발행된 메시지 기록을 볼 수 있습니다.</p>
     <table class="table rounded">
         <caption>Message Request List</caption>
         <thead>
@@ -16,8 +15,9 @@
                 <th scope="col">index</th>
                 <th scope="col">ID</th>
                 <th scope="col">TOPIC ARN</th>
+                <th scope="col">TARGET ARN</th>
                 <th scope="col">MSG</th>
-                <th scope="col">DELETE</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -25,13 +25,20 @@
                 <td th:text="${index.index+1}"></td>
                 <td th:text="${req.id}"></td>
                 <td th:text="${req.topicArn}"></td>
+                <td th:text="${req.targetArn}"></td>
                 <td th:text="${req.message}"></td>
                 <td>
-                    <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">X</a>
+                    <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">
+                        <span style="color: white;">
+                            <i class="fas fa-trash-alt"></i>
+                        </span>
+                    </a>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+<div th:replace="fragments/common :: footer"></div>
+
 </body>
 </html>

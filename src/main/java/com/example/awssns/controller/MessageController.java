@@ -27,6 +27,7 @@ public class MessageController {
 
     @PostMapping("/publish")
     public String publish(@RequestParam String topicArn, @RequestBody Map<String, Object> message) {
+        //TODO: 발행 시간 추가
         SnsClient snsClient = credentialService.getSnsClient();
         final PublishRequest publishRequest = PublishRequest.builder()
                 .topicArn(topicArn)
@@ -44,7 +45,9 @@ public class MessageController {
         snsClient.close();
 
         messageRequestService.insert(publishRequest);
-        log.info(messageRequestService.findAll().toString());
+        messageRequestService.findAll().forEach(
+                e -> log.info(e.toString())
+        );
 
         return "sent MSG ID = " + publishResponse.messageId();
     }

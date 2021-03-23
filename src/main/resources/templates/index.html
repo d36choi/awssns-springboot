@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/common :: html-head">
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:replace="fragments/common:: header"></div>
+    <div class="container-fluid mt-5 pl-5 pr-5">
+        <h2 style="font-weight: bold">토픽 리스트</h2>
+        <p>현재 등록된 토픽 리스트를 보여줍니다.</p>
+        <div class="row">
+            <table class="table table-bordered">
+                <caption>Topic List</caption>
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col">index</th>
+                    <th scope="col">토픽명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="topic,index : ${topics}">
+                    <td th:text="${index.index+1}"></td>
+                    <td th:text="${topic.topicArn()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-5">
+            <h2 style="font-weight: bold">구독자 리스트</h2>
+            <p>현재 등록된 구독자 리스트를 보여줍니다.</p>
+            <div class="row mt-3">
+                <table class="table table-responsive table-bordered">
+                    <caption>Subscription List</caption>
+                    <thead>
+                    <tr class="table-primary">
+                        <th scope="col">index</th>
+                        <th scope="col">구독자</th>
+                        <th scope="col">구독 요청 주소</th>
+                        <th scope="col">구독 토픽</th>
+                        <th scope="col">방식</th>
+                        <th scope="col">소유자</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subs,index : ${subscriptions}">
+                        <td th:text="${index.index+1}"></td>
+                        <td th:text="${subs.endpoint()}"></td>
+                        <td th:text="${subs.subscriptionArn()}"></td>
+                        <td th:text="${subs.topicArn()}"></td>
+                        <td th:text="${subs.protocol()}"></td>
+                        <td th:text="${subs.owner()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/common:: footer"></div>
+</body>
+</html>
