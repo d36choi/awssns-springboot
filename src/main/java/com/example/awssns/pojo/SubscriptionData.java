@@ -6,10 +6,6 @@ import lombok.NonNull;
 @Getter
 public class SubscriptionData {
 
-//    .protocol("https")
-//                .topicArn(topicArn)
-//                .endpoint(endpoint)
-
     @NonNull private String protocol;
     @NonNull private String topicArn;
     @NonNull private String endpoint;
