@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/common :: html-head">
-    <meta charset="UTF-8">
 </head>
 <body>
 <div th:replace="fragments/common :: header"></div>
-<div class="container-fluid mt-5 pl-5 pr-5">
+
+<div class="messageList container-fluid mt-5 pl-5 pr-5">
     <h2 style="font-weight: bold">메시지 리스트</h2>
     <p>현재 발행된 메시지 기록을 볼 수 있습니다.</p>
-    <table class="table rounded">
+
+    <div class="d-flex flex-row-reverse">
+        <div class="input-group mb-3">
+            <input id="topicSearchInput" type="text" class="form-control" placeholder="토픽이름을 입력하세요"  >
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="search()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <table id="messageRequestTable" class="table">
         <caption>Message Request List</caption>
         <thead>
             <tr class="table-primary">
                 <th scope="col">index</th>
                 <th scope="col">ID</th>
-                <th scope="col">TOPIC ARN</th>
-                <th scope="col">TARGET ARN</th>
-                <th scope="col">MSG</th>
+                <th scope="col">토픽ARN</th>
+                <th scope="col">목적지</th>
+                <th scope="col">메시지</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -39,6 +50,6 @@
     </table>
 </div>
 <div th:replace="fragments/common :: footer"></div>
-
+<script src="/js/search.js"></script>
 </body>
 </html>

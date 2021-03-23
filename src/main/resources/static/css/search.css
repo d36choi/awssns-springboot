@@ -1,0 +1,27 @@
+/*https://bbbootstrap.com/snippets/bootstrap-online-work-finder-search-bar-and-pricing-88727925*/
+.messageList .form-control {
+    border-radius: 7px;
+    background: #FFFFFF;
+    border: 1.5px solid #E3E6ED
+}
+
+.messageList input.form-control:focus {
+    box-shadow: none;
+    border: 1.5px solid #E3E6ED;
+    background-color: #F7F8FD;
+    letter-spacing: 1px
+}
+
+.messageList .btn-primary {
+    background-color: #5878FF !important;
+    border-radius: 7px
+}
+
+.messageList .btn-primary:focus {
+    box-shadow: none
+}
+
+.messageList .text {
+    font-size: 13px;
+    color: #9CA1A4
+}
