@@ -12,16 +12,16 @@
             <table class="table table-bordered">
                 <caption>Topic List</caption>
                 <thead>
-                <tr class="table-primary">
-                    <th scope="col">index</th>
-                    <th scope="col">토픽명</th>
-                </tr>
+                    <tr class="table-primary">
+                        <th scope="col">index</th>
+                        <th scope="col">토픽명</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr th:each="topic,index : ${topics}">
-                    <td th:text="${index.index+1}"></td>
-                    <td th:text="${topic.topicArn()}"></td>
-                </tr>
+                    <tr th:each="topic,index : ${topics}">
+                        <td th:text="${index.index+1}"></td>
+                        <td><a th:href="@{/detail(topicArn=${topic.topicArn})}" th:text="${topic.topicArn()}"></a></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

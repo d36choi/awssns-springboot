@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/common :: html-head">
+</head>
+<body>
+<div th:replace="fragments/common:: header"></div>
+    <div class="container-fluid">
+        <h2 style="font-weight: bold" th:text="|${topicArn} 세부정보|"></h2>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">key</th>
+                    <th scope="col">value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry : ${attributes}">
+                    <td th:text="${entry.key}">Key 1</td>
+                    <td th:text="${entry.value}">Value 1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<div th:replace="fragments/common:: footer"></div>
+</body>
+</html>
