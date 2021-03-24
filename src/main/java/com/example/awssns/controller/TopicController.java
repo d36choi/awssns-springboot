@@ -93,23 +93,6 @@ public class TopicController {
         return new ResponseEntity<>("unsubscription success.", HttpStatus.OK);
     }
 
-    @ResponseBody
-    @GetMapping("/detail")
-    public ResponseEntity<Map<String, String>> topicDetail(@RequestParam String topicArn) {
-        final GetTopicAttributesRequest request = GetTopicAttributesRequest.builder()
-                .topicArn(topicArn)
-                .build();
-
-        SnsClient snsClient = credentialService.getSnsClient();
-        final GetTopicAttributesResponse response = snsClient.getTopicAttributes(request);
-
-        if (!response.sdkHttpResponse().isSuccessful()) {
-            throw getResponseStatusException(response);
-        }
-        snsClient.close();
-        return new ResponseEntity<>(response.attributes(), HttpStatus.OK);
-    }
-
 
     private ResponseStatusException getResponseStatusException(SnsResponse response) {
         return new ResponseStatusException(
