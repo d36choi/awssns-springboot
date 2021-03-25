@@ -1,8 +1,8 @@
-# coding=utf-8
-# This is a sample Python script.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# Press �똽R to execute it or replace it with your code.
+# Press Double �눉 to search everywhere for classes, files, tool windows, actions, and settings.
 import subprocess
 import sys
 
