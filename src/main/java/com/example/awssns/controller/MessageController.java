@@ -3,6 +3,8 @@ package com.example.awssns.controller;
 import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.service.CredentialService;
 import com.example.awssns.service.MessageRequestService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -25,8 +27,10 @@ public class MessageController {
         this.messageRequestService = messageRequestService;
     }
 
+    @ApiOperation(value = "publish message", notes = "")
     @PostMapping("/publish")
-    public String publish(@RequestParam String topicArn, @RequestBody Map<String, Object> message) {
+    public String publish(@ApiParam(value = "where to send message") @RequestParam String topicArn,
+                          @RequestBody Map<String, Object> message) {
         //TODO: 발행 시간 추가
         SnsClient snsClient = credentialService.getSnsClient();
         final PublishRequest publishRequest = PublishRequest.builder()
@@ -35,6 +39,7 @@ public class MessageController {
                 .message(message.toString())
                 .build();
         PublishResponse publishResponse = null;
+        // 지양
         try {
             publishResponse = snsClient.publish(publishRequest);
         } catch (Exception e) {
