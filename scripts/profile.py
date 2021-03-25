@@ -5,7 +5,7 @@ import sys
 
 
 def find_idle_profile():
-    localhost_profile = 'http://localhost:8081/profile'
+    localhost_profile = 'http://localhost/profile'
     res_code = sp.check_output(['curl', '-s', '-o', '/dev/null', '-w', '"%{http_code}"', ('%s' % localhost_profile)])
     res_code = int(res_code.replace('"', ''))
 
@@ -30,6 +30,3 @@ def get_idle_port():
         return '8082'
     else:
         return 'err'
-
-
-find_idle_profile()
