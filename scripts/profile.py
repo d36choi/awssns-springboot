@@ -24,6 +24,7 @@ def find_idle_profile():
 
 def get_idle_port():
     idle_profile = find_idle_profile()
+    print('> idle port: '+idle_profile)
     if idle_profile == '1':
         return '8081'
     elif idle_profile == '2':

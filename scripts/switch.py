@@ -20,8 +20,13 @@ def switch():
     localhost_url = 'http://127.0.0.1:'+idle_port+';'
     print ('> 전환할 포트 :', idle_port)
     print ('> 포트 전환')
-    sp.call(['set','\$service_url',localhost_url,'|','sudo','tee','/etc/nginx/conf.d/service-url.inc'])
+
+    sp.call(['echo','"wow"'])
+    # sp.call(['set','\$service_url',localhost_url,'|','sudo','tee','/etc/nginx/conf.d/service-url.inc'])
+    url_pipe = sp.Popen(['echo','set $service_url '+localhost_url], stdout=sp.PIPE)
+    sp.call(['sudo','tee','/etc/nginx/conf.d/service-url.inc'], stdin=url_pipe.stdout)
+    #sp.call(['echo','"set $service_url '+localhost_url+' | sudo tee /etc/nginx/conf.d/service-url.inc"'])
 
     print ('> nginx reload')
     sp.call(['sudo','service','nginx','reload'])
-
+switch()

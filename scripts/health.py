@@ -19,7 +19,7 @@ for i in range(10):
     if response == '1' or '2':
         print ('> switch start')
         switch.switch()
-        break
+        exit()
 
 
 print ('> health check failed')
