@@ -38,3 +38,5 @@ out/
 
 ### for security ###
 src/main/resources/application-keys.properties
+
+scripts/.idea
