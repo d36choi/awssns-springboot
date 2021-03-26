@@ -56,7 +56,6 @@ class launcher:
     def health_check(self):
         profile_url = 'http://localhost:' + self.idle_port + '/profile'
         print ('> health check start (' + profile_url + ')')
-        print ('> IDLE_PORT:' + self.idle_port)
         response = ''
         print('> sleep 5 seconds for waiting project to run')
         time.sleep(5)
@@ -76,7 +75,6 @@ class launcher:
 
     def switch(self):
         localhost_url = 'http://127.0.0.1:' + self.idle_port + ';'
-        print ('> 전환할 포트 : ' + self.idle_port)
         print ('> 포트 전환')
 
         url_pipe = sp.Popen(['echo', 'set $service_url ' + localhost_url], stdout=sp.PIPE)
