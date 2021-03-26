@@ -17,6 +17,8 @@ def stop():
     if idle_pid == '':
         print("구동중인 idle 애플리케이션이 없으므로 멈추지 않습니다.")
     else:
+        idle_pid = idle_pid.replace('"','').replace('\n','')
+        print('> '+idle_pid+' 프로세스 제거')
         sp.call(['kill','-15',idle_pid])
 
 

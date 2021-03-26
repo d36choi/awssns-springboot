@@ -15,8 +15,8 @@ jar_name = str.replace(jar_name,'\n','')
 print('>'+jar_name)
 #sp.call(['chmod', '+x', jar_name])
 idle_profile = profile.find_idle_profile()
-sp.call(['java', '-jar', '-Dspring.config.location=classpath:/application.properties,'+
+sp.call(['nohup','java', '-jar', '-Dspring.config.location=classpath:/application.properties,'+
          'classpath:/application-' + idle_profile + '.properties,'+
          'classpath:/application-keys.properties',
          '-Dspring.profiles.active=' + idle_profile,
-         repo+jar_name])
+         repo+jar_name, '&'])
