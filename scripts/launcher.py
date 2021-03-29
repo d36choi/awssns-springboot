@@ -13,12 +13,12 @@ class launcher:
         self.idle_profile = self.find_idle_profile()
         self.idle_port = self.get_idle_port()
     def find_idle_profile(self):
-
+        res_code = ''
         try:
             res_code = sp.check_output(
             ['curl', '-s', '-o', '/dev/null', '-w', '"%{http_code}"', ('%s' % self.localhost_profile)])
         except sp.CalledProcessError, e:
-            res_code = 404
+            res_code = "404"
         res_code = int(res_code.replace('"', ''))
 
         if res_code >= 400:
