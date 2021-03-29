@@ -4,6 +4,7 @@ import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.service.CredentialService;
 import com.example.awssns.service.MessageRequestService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,13 @@ public class MessageController {
     AWSConfig awsConfig;
     CredentialService credentialService;
     MessageRequestService messageRequestService;
+    ObjectMapper objectMapper;
 
-    public MessageController(AWSConfig awsConfig, CredentialService credentialService, MessageRequestService messageRequestService) {
+    public MessageController(AWSConfig awsConfig, CredentialService credentialService, MessageRequestService messageRequestService, ObjectMapper objectMapper) {
         this.awsConfig = awsConfig;
         this.credentialService = credentialService;
         this.messageRequestService = messageRequestService;
+        this.objectMapper = objectMapper;
     }
 
     @ApiOperation(value = "publish message", notes = "")
@@ -37,7 +40,7 @@ public class MessageController {
         final PublishRequest publishRequest = PublishRequest.builder()
                 .topicArn(topicArn)
                 .subject("HTTP ENDPOINT TEST MESSAGE")
-                .message(message.toString())
+                .message(objectMapper.writeValueAsString(message))
                 .build();
         PublishResponse publishResponse = null;
         // Áö¾ç
