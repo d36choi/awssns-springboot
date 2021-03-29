@@ -27,9 +27,6 @@ public class ListViewController {
     public String listTest(Model model) {
         List<MessageRequest> requests = messageRequestService.findAll();
         model.addAttribute("requests",requests);
-        requests.forEach(
-                r -> log.info(r.toString())
-        );
         return "messageList";
     }
 

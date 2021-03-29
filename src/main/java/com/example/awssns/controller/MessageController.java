@@ -3,6 +3,7 @@ package com.example.awssns.controller;
 import com.example.awssns.configuration.AWSConfig;
 import com.example.awssns.service.CredentialService;
 import com.example.awssns.service.MessageRequestService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class MessageController {
     @ApiOperation(value = "publish message", notes = "")
     @PostMapping("/publish")
     public String publish(@ApiParam(value = "where to send message") @RequestParam String topicArn,
-                          @RequestBody Map<String, Object> message) {
+                          @RequestBody Map<String, String> message) throws JsonProcessingException {
         //TODO: 발행 시간 추가
         SnsClient snsClient = credentialService.getSnsClient();
         final PublishRequest publishRequest = PublishRequest.builder()
@@ -49,10 +50,8 @@ public class MessageController {
         log.info("message status:" + publishResponse.sdkHttpResponse().statusCode());
         snsClient.close();
 
-        messageRequestService.insert(publishRequest);
-        messageRequestService.findAll().forEach(
-                e -> log.info(e.toString())
-        );
+        messageRequestService.insert(publishRequest,message);
+
 
         return "sent MSG ID = " + publishResponse.messageId();
     }

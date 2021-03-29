@@ -37,7 +37,12 @@
                 <td th:text="${req.id}"></td>
                 <td th:text="${req.topicArn}"></td>
                 <td th:text="${req.targetArn}"></td>
-                <td th:text="${req.message}"></td>
+                <td>
+                   <p th:each="element : ${req.message}">
+                       <code th:text="${element.key}" class="pr-3"></code>
+                       <samp th:text="${element.value}"></samp>
+                   </p>
+                </td>
                 <td>
                     <a th:href="@{/list/delete(id=${req.id})}" class="btn btn-danger">
                         <span style="color: white;">
