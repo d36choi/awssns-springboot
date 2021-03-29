@@ -59,11 +59,11 @@ public class TopicController {
     }
 
     @PostMapping("/subscribe")
-    public ResponseEntity<String> subscribe(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> subscribe(@RequestBody SubscriptionData payload) {
         final SubscribeRequest subscribeRequest = SubscribeRequest.builder()
-                .protocol(payload.get("protocol"))
-                .topicArn(payload.get("topicArn"))
-                .endpoint(payload.get("endpoint"))
+                .protocol(payload.getProtocol())
+                .topicArn(payload.getTopicArn())
+                .endpoint(payload.getEndpoint())
                 .build();
         SnsClient snsClient = credentialService.getSnsClient();
         final SubscribeResponse subscribeResponse = snsClient.subscribe(subscribeRequest);
