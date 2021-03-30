@@ -17,9 +17,9 @@ import java.util.Optional;
 @Service
 public class MessageRequestServiceImpl implements MessageRequestService {
 
-    MessageRequestRepository messageRequestRepository;
-    CredentialService credentialService;
-    SnsRequestFactoryService snsRequestFactoryService;
+    private final MessageRequestRepository messageRequestRepository;
+    private final CredentialService credentialService;
+    private final SnsRequestFactoryService snsRequestFactoryService;
 
     public MessageRequestServiceImpl(MessageRequestRepository messageRequestRepository, CredentialService credentialService, SnsRequestFactoryService snsRequestFactoryService) {
         this.messageRequestRepository = messageRequestRepository;

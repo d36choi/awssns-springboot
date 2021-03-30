@@ -13,8 +13,8 @@ import software.amazon.awssdk.services.sns.model.*;
 @Service
 public class TopicRequestServiceImpl implements TopicRequestService {
 
-    CredentialService credentialService;
-    SnsRequestFactoryService snsRequestFactoryService;
+    private final CredentialService credentialService;
+    private final SnsRequestFactoryService snsRequestFactoryService;
 
     public TopicRequestServiceImpl(CredentialService credentialService, SnsRequestFactoryService snsRequestFactoryService) {
         this.credentialService = credentialService;

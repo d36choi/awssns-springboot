@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.sns.SnsClient;
 @Service
 public class CredentialService {
 
-    AWSConfig awsConfig;
+    private final AWSConfig awsConfig;
 
     public CredentialService(AWSConfig awsConfig) {
         this.awsConfig = awsConfig;

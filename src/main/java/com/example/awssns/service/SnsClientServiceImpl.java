@@ -12,7 +12,7 @@ import java.util.Map;
 @Service
 public class SnsClientServiceImpl implements SnsClientService{
 
-    CredentialService credentialService;
+    private final CredentialService credentialService;
 
     public SnsClientServiceImpl(CredentialService credentialService) {
         this.credentialService = credentialService;
