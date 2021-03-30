@@ -3,7 +3,6 @@ package com.example.awssns.service;
 import com.example.awssns.entity.MessageRequest;
 import com.example.awssns.repository.MessageRequestRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ import java.util.Optional;
 public class MessageRequestServiceImpl implements MessageRequestService {
 
     MessageRequestRepository messageRequestRepository;
-    ObjectMapper mapper;
     CredentialService credentialService;
+    SnsRequestFactoryService snsRequestFactoryService;
 
     @Override
     public void insert(PublishRequest request, Map<String, String> message) {
@@ -53,17 +52,15 @@ public class MessageRequestServiceImpl implements MessageRequestService {
     @Override
     public ResponseEntity<String> publishMessage(String topicArn, Map<String, String> message) throws JsonProcessingException {
         SnsClient snsClient = credentialService.getSnsClient();
-        final PublishRequest publishRequest = PublishRequest.builder()
-                .topicArn(topicArn)
-                .subject("11st CX team")
-                .message(mapper.writeValueAsString(message))
-                .build();
+        final PublishRequest publishRequest = snsRequestFactoryService.getPublishRequest(topicArn, message);
 
         PublishResponse publishResponse = snsClient.publish(publishRequest);
         snsClient.close();
 
-        insert(publishRequest,message);
+        insert(publishRequest, message);
 
         return new ResponseEntity<>(publishResponse.messageId(), HttpStatus.OK);
     }
+
+
 }

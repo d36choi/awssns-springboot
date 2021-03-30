@@ -16,50 +16,44 @@ import software.amazon.awssdk.services.sns.model.*;
 public class TopicRequestServiceImpl implements TopicRequestService {
 
     CredentialService credentialService;
+    SnsRequestFactoryService snsRequestFactoryService;
 
     @Override
     public ResponseEntity<String> createTopic(String topicName) {
-        final CreateTopicRequest createTopicRequest = CreateTopicRequest.builder()
-                .name(topicName)
-                .build();
+        final CreateTopicRequest createTopicRequest = snsRequestFactoryService.getCreateTopicRequest(topicName);
         SnsClient snsClient = credentialService.getSnsClient();
         final CreateTopicResponse response = snsClient.createTopic(createTopicRequest);
 
         validate(snsClient, response);
-        return new ResponseEntity<>(String.format("Create %s topic",response.topicArn()), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Create %s topic", response.topicArn()), HttpStatus.OK);
     }
 
 
     @Override
     public ResponseEntity<String> deleteTopic(String topicArn) {
-        final DeleteTopicRequest deleteTopicRequest = DeleteTopicRequest.builder()
-                .topicArn(topicArn)
-                .build();
+        final DeleteTopicRequest deleteTopicRequest = snsRequestFactoryService.getDeleteTopicRequest(topicArn);
         SnsClient snsClient = credentialService.getSnsClient();
         final DeleteTopicResponse response = snsClient.deleteTopic(deleteTopicRequest);
 
         validate(snsClient, response);
-        return new ResponseEntity<>(String.format("%s removed.",topicArn), HttpStatus.OK);    }
+        return new ResponseEntity<>(String.format("%s removed.", topicArn), HttpStatus.OK);
+    }
+
 
     @Override
     public ResponseEntity<String> subscribe(SubscriptionData payload) {
-        final SubscribeRequest subscribeRequest = SubscribeRequest.builder()
-                .protocol(payload.getProtocol())
-                .topicArn(payload.getTopicArn())
-                .endpoint(payload.getEndpoint())
-                .build();
+        final SubscribeRequest subscribeRequest = snsRequestFactoryService.getSubscribeRequest(payload);
         SnsClient snsClient = credentialService.getSnsClient();
         final SubscribeResponse response = snsClient.subscribe(subscribeRequest);
 
         validate(snsClient, response);
-        return new ResponseEntity<>(String.format("subscription to %s",response.subscriptionArn()), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("subscription to %s", response.subscriptionArn()), HttpStatus.OK);
     }
+
 
     @Override
     public ResponseEntity<String> unsubscribe(String subscriptionArn) {
-        final UnsubscribeRequest request = UnsubscribeRequest.builder()
-                .subscriptionArn(subscriptionArn)
-                .build();
+        final UnsubscribeRequest request = snsRequestFactoryService.getUnsubscribeRequest(subscriptionArn);
 
         SnsClient snsClient = credentialService.getSnsClient();
         final UnsubscribeResponse response = snsClient.unsubscribe(request);

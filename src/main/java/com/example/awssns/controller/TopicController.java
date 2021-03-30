@@ -2,16 +2,17 @@ package com.example.awssns.controller;
 
 import com.example.awssns.pojo.SubscriptionData;
 import com.example.awssns.service.TopicRequestService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+@Slf4j @RequiredArgsConstructor
 @RequestMapping("/topic")
 @RestController
 public class TopicController {
 
-    TopicRequestService topicRequestService;
+    private final TopicRequestService topicRequestService;
 
     @PostMapping("/create")
     public ResponseEntity<String> createTopic(@RequestParam final String topicName) {

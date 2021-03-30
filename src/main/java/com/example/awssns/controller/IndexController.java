@@ -3,17 +3,18 @@ package com.example.awssns.controller;
 import com.example.awssns.service.SnsClientService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-
+@RequiredArgsConstructor
 @Controller
 public class IndexController {
 
-    SnsClientService snsClientService;
+    private final SnsClientService snsClientService;
 
     @ApiOperation(value = "home page", notes = "see topic, subscription list")
     @GetMapping("/")

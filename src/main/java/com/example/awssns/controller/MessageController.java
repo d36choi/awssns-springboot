@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 public class MessageController {
 
-    MessageRequestService messageRequestService;
+    private final MessageRequestService messageRequestService;
 
     @ApiOperation(value = "publish message", notes = "")
     @PostMapping("/publish")
