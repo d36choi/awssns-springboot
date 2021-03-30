@@ -1,45 +1,22 @@
 package com.example.awssns.service;
 
 import com.example.awssns.entity.MessageRequest;
-import com.example.awssns.repository.MessageRequestRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.http.ResponseEntity;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
-public class MessageRequestService {
+public interface MessageRequestService {
+    void insert(PublishRequest request, Map<String, String> message);
 
-    MessageRequestRepository messageRequestRepository;
-    ObjectMapper mapper;
-    public MessageRequestService(MessageRequestRepository messageRequestRepository,ObjectMapper mapper) {
-        this.messageRequestRepository = messageRequestRepository;
-        this.mapper = mapper;
-    }
+    Optional<MessageRequest> findById(String id);
 
-    public void insert(PublishRequest request,Map<String, String> message) {
+    void deleteById(String id);
 
-        messageRequestRepository.insert(MessageRequest.builder()
-                .topicArn(request.topicArn())
-                .targetArn(request.targetArn())
-                .message(message)
-                .subject(request.subject())
-                .build());
-    }
+    List<MessageRequest> findAll();
 
-    public Optional<MessageRequest> findById(String id) {
-        return messageRequestRepository.findById(id);
-    }
-
-    public void deleteById(String id) {
-        messageRequestRepository.deleteById(id);
-    }
-
-    public List<MessageRequest> findAll() {
-        return messageRequestRepository.findAll();
-    }
-
+    ResponseEntity<String> publishMessage(String topicArn, Map<String, String> message) throws JsonProcessingException;
 }
