@@ -23,14 +23,14 @@ public class MessageListController {
 
     @GetMapping("/list")
     public String messageList(Model model) {
-        model.addAttribute("requests",messageRequestService.findAll());
+        model.addAttribute("requests",messageRequestService.getAllMessageRequests());
         return "messageList";
     }
 
     @GetMapping("/delete")
     public String delete(Model model, @RequestParam("id") String id) {
-        messageRequestService.deleteById(id);
-        model.addAttribute("requests",messageRequestService.findAll());
+        messageRequestService.removeMessageRequest(id);
+        model.addAttribute("requests",messageRequestService.getAllMessageRequests());
         return "messageList";
     }
 }

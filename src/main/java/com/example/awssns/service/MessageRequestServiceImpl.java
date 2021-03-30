@@ -28,7 +28,7 @@ public class MessageRequestServiceImpl implements MessageRequestService {
     }
 
     @Override
-    public void insert(PublishRequest request, Map<String, String> message) {
+    public void addRequestToDocument(PublishRequest request, Map<String, String> message) {
 
         messageRequestRepository.insert(MessageRequest.builder()
                 .topicArn(request.topicArn())
@@ -39,17 +39,17 @@ public class MessageRequestServiceImpl implements MessageRequestService {
     }
 
     @Override
-    public Optional<MessageRequest> findById(String id) {
+    public Optional<MessageRequest> getMessageRequest(String id) {
         return messageRequestRepository.findById(id);
     }
 
     @Override
-    public void deleteById(String id) {
+    public void removeMessageRequest(String id) {
         messageRequestRepository.deleteById(id);
     }
 
     @Override
-    public List<MessageRequest> findAll() {
+    public List<MessageRequest> getAllMessageRequests() {
         return messageRequestRepository.findAll();
     }
 
@@ -61,7 +61,7 @@ public class MessageRequestServiceImpl implements MessageRequestService {
         PublishResponse publishResponse = snsClient.publish(publishRequest);
         snsClient.close();
 
-        insert(publishRequest, message);
+        addRequestToDocument(publishRequest, message);
 
         return new ResponseEntity<>(publishResponse.messageId(), HttpStatus.OK);
     }

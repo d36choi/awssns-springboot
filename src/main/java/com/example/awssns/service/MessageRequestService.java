@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface MessageRequestService {
-    void insert(PublishRequest request, Map<String, String> message);
+    void addRequestToDocument(PublishRequest request, Map<String, String> message);
 
-    Optional<MessageRequest> findById(String id);
+    Optional<MessageRequest> getMessageRequest(String id);
 
-    void deleteById(String id);
+    void removeMessageRequest(String id);
 
-    List<MessageRequest> findAll();
+    List<MessageRequest> getAllMessageRequests();
 
     ResponseEntity<String> publishMessage(String topicArn, Map<String, String> message) throws JsonProcessingException;
 }
