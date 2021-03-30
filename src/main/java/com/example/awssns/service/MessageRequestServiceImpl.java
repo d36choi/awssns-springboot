@@ -3,7 +3,6 @@ package com.example.awssns.service;
 import com.example.awssns.entity.MessageRequest;
 import com.example.awssns.repository.MessageRequestRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 public class MessageRequestServiceImpl implements MessageRequestService {
 
     MessageRequestRepository messageRequestRepository;
     CredentialService credentialService;
     SnsRequestFactoryService snsRequestFactoryService;
+
+    public MessageRequestServiceImpl(MessageRequestRepository messageRequestRepository, CredentialService credentialService, SnsRequestFactoryService snsRequestFactoryService) {
+        this.messageRequestRepository = messageRequestRepository;
+        this.credentialService = credentialService;
+        this.snsRequestFactoryService = snsRequestFactoryService;
+    }
 
     @Override
     public void insert(PublishRequest request, Map<String, String> message) {

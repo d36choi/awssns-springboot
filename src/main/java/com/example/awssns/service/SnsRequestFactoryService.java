@@ -9,13 +9,15 @@ import software.amazon.awssdk.services.sns.model.*;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Service
 public class SnsRequestFactoryService {
 
     private static final String DEFAULT_SUBJECT = "11st CX team";
     private final ObjectMapper mapper;
 
+    public SnsRequestFactoryService(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     protected DeleteTopicRequest getDeleteTopicRequest(String topicArn) {
         return DeleteTopicRequest.builder()

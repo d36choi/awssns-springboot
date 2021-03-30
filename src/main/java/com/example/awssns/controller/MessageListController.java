@@ -1,9 +1,7 @@
 package com.example.awssns.controller;
 
 
-import com.example.awssns.entity.MessageRequest;
 import com.example.awssns.service.MessageRequestService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,12 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@Slf4j @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/message")
 @Controller
 public class MessageListController {
 
     private final MessageRequestService messageRequestService;
+
+    public MessageListController(MessageRequestService messageRequestService) {
+        this.messageRequestService = messageRequestService;
+    }
 
     @GetMapping("/list")
     public String messageList(Model model) {

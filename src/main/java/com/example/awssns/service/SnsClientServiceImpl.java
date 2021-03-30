@@ -1,6 +1,5 @@
 package com.example.awssns.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.GetTopicAttributesRequest;
@@ -10,11 +9,14 @@ import software.amazon.awssdk.services.sns.model.Topic;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Service
 public class SnsClientServiceImpl implements SnsClientService{
 
     CredentialService credentialService;
+
+    public SnsClientServiceImpl(CredentialService credentialService) {
+        this.credentialService = credentialService;
+    }
 
     @Override
     public List<Topic> getTopics() {

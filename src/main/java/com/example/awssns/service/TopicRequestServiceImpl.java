@@ -1,7 +1,6 @@
 package com.example.awssns.service;
 
 import com.example.awssns.pojo.SubscriptionData;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +10,16 @@ import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.*;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class TopicRequestServiceImpl implements TopicRequestService {
 
     CredentialService credentialService;
     SnsRequestFactoryService snsRequestFactoryService;
+
+    public TopicRequestServiceImpl(CredentialService credentialService, SnsRequestFactoryService snsRequestFactoryService) {
+        this.credentialService = credentialService;
+        this.snsRequestFactoryService = snsRequestFactoryService;
+    }
 
     @Override
     public ResponseEntity<String> createTopic(String topicName) {
