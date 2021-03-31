@@ -3,17 +3,21 @@ package com.example.awssns.service;
 import com.example.awssns.entity.MessageRequest;
 import com.example.awssns.repository.MessageRequestRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 import software.amazon.awssdk.services.sns.model.PublishResponse;
+import software.amazon.awssdk.services.sns.model.SnsException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class MessageRequestServiceImpl implements MessageRequestService {
 
@@ -39,8 +43,9 @@ public class MessageRequestServiceImpl implements MessageRequestService {
     }
 
     @Override
-    public Optional<MessageRequest> getMessageRequest(String id) {
-        return messageRequestRepository.findById(id);
+    public MessageRequest getMessageRequest(String id) {
+        Optional<MessageRequest> optionalMessageRequest = messageRequestRepository.findById(id);
+        return optionalMessageRequest.orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -55,15 +60,16 @@ public class MessageRequestServiceImpl implements MessageRequestService {
 
     @Override
     public ResponseEntity<String> publishMessage(String topicArn, Map<String, String> message) throws JsonProcessingException {
-        SnsClient snsClient = credentialService.getSnsClient();
-        final PublishRequest publishRequest = snsRequestFactoryService.getPublishRequest(topicArn, message);
+        try (SnsClient snsClient = credentialService.getSnsClient()) {
+            final PublishRequest publishRequest = snsRequestFactoryService.getPublishRequest(topicArn, message);
+            PublishResponse publishResponse = snsClient.publish(publishRequest);
+            addRequestToDocument(publishRequest, message);
+            return new ResponseEntity<>(publishResponse.messageId(), HttpStatus.OK);
+        } catch (SnsException e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(String.format("Message Publishing Fail%n%s", e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
 
-        PublishResponse publishResponse = snsClient.publish(publishRequest);
-        snsClient.close();
-
-        addRequestToDocument(publishRequest, message);
-
-        return new ResponseEntity<>(publishResponse.messageId(), HttpStatus.OK);
     }
 
 

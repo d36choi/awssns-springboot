@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface MessageRequestService {
     void addRequestToDocument(PublishRequest request, Map<String, String> message);
 
-    Optional<MessageRequest> getMessageRequest(String id);
+    MessageRequest getMessageRequest(String id);
 
     void removeMessageRequest(String id);
 
