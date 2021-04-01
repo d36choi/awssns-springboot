@@ -27,7 +27,7 @@ public class TopicRequestServiceImpl implements TopicRequestService {
         try (SnsClient snsClient = credentialService.getSnsClient()) {
             final CreateTopicRequest createTopicRequest = snsRequestFactoryService.getCreateTopicRequest(topicName);
             final CreateTopicResponse response = snsClient.createTopic(createTopicRequest);
-            validate(snsClient, response);
+            validate(response);
             return new ResponseEntity<>(String.format("Create %s topic", response.topicArn()), HttpStatus.OK);
         }
 
@@ -39,7 +39,7 @@ public class TopicRequestServiceImpl implements TopicRequestService {
         try (SnsClient snsClient = credentialService.getSnsClient()) {
             final DeleteTopicRequest deleteTopicRequest = snsRequestFactoryService.getDeleteTopicRequest(topicArn);
             final DeleteTopicResponse response = snsClient.deleteTopic(deleteTopicRequest);
-            validate(snsClient, response);
+            validate(response);
             return new ResponseEntity<>(String.format("%s removed.", topicArn), HttpStatus.OK);
         }
 
@@ -51,7 +51,7 @@ public class TopicRequestServiceImpl implements TopicRequestService {
         try (SnsClient snsClient = credentialService.getSnsClient()) {
             final SubscribeRequest subscribeRequest = snsRequestFactoryService.getSubscribeRequest(payload);
             final SubscribeResponse response = snsClient.subscribe(subscribeRequest);
-            validate(snsClient, response);
+            validate(response);
             return new ResponseEntity<>(String.format("subscription to %s", response.subscriptionArn()), HttpStatus.OK);
         }
 
@@ -63,13 +63,13 @@ public class TopicRequestServiceImpl implements TopicRequestService {
         try (SnsClient snsClient = credentialService.getSnsClient()) {
             final UnsubscribeRequest request = snsRequestFactoryService.getUnsubscribeRequest(subscriptionArn);
             final UnsubscribeResponse response = snsClient.unsubscribe(request);
-            validate(snsClient, response);
+            validate(response);
             return new ResponseEntity<>("unsubscription success.", HttpStatus.OK);
         }
 
     }
 
-    private void validate(SnsClient snsClient, SnsResponse response) {
+    private void validate(SnsResponse response) {
         if (!response.sdkHttpResponse().isSuccessful()) {
             throw getResponseStatusException(response);
         }

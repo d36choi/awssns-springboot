@@ -16,7 +16,7 @@ public class CredentialService {
         this.awsConfig = awsConfig;
     }
 
-    public AwsCredentialsProvider getAwsCredentials(String accessKeyID, String secretAccessKey) {
+    private AwsCredentialsProvider getAwsCredentials(String accessKeyID, String secretAccessKey) {
         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(accessKeyID, secretAccessKey);
         return () -> awsBasicCredentials;
     }
