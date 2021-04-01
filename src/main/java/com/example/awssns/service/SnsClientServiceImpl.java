@@ -20,32 +20,30 @@ public class SnsClientServiceImpl implements SnsClientService{
 
     @Override
     public List<Topic> getTopics() {
+        try (SnsClient snsClient = credentialService.getSnsClient()) {
+            return snsClient.listTopics().topics();
+        }
 
-        SnsClient snsClient = credentialService.getSnsClient();
-        List<Topic> topics = snsClient.listTopics().topics();
-        snsClient.close();
-        return topics;
     }
 
     @Override
     public List<Subscription> getSubscriptions() {
 
-        SnsClient snsClient = credentialService.getSnsClient();
-        List<Subscription> subscriptions = snsClient.listSubscriptions().subscriptions();
-        snsClient.close();
-        return subscriptions;
+        try (SnsClient snsClient = credentialService.getSnsClient()) {
+            return snsClient.listSubscriptions().subscriptions();
+        }
     }
 
     @Override
     public Map<String, String> getTopicAttributes(String topicArn) {
 
-        final GetTopicAttributesRequest request = GetTopicAttributesRequest.builder()
-                .topicArn(topicArn)
-                .build();
 
-        SnsClient snsClient = credentialService.getSnsClient();
-        Map<String, String> attributes = snsClient.getTopicAttributes(request).attributes();
-        snsClient.close();
-        return attributes;
+
+        try (SnsClient snsClient = credentialService.getSnsClient()) {
+            final GetTopicAttributesRequest request = GetTopicAttributesRequest.builder()
+                    .topicArn(topicArn)
+                    .build();
+            return snsClient.getTopicAttributes(request).attributes();
+        }
     }
 }

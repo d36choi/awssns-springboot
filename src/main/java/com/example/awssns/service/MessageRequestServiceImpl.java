@@ -59,17 +59,13 @@ public class MessageRequestServiceImpl implements MessageRequestService {
     }
 
     @Override
-    public ResponseEntity<String> publishMessage(String topicArn, Map<String, String> message) throws JsonProcessingException {
+    public ResponseEntity<String> publishMessage(String topicArn, Map<String, String> message) throws JsonProcessingException, SnsException {
         try (SnsClient snsClient = credentialService.getSnsClient()) {
             final PublishRequest publishRequest = snsRequestFactoryService.getPublishRequest(topicArn, message);
             PublishResponse publishResponse = snsClient.publish(publishRequest);
             addRequestToDocument(publishRequest, message);
             return new ResponseEntity<>(publishResponse.messageId(), HttpStatus.OK);
-        } catch (SnsException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(String.format("Message Publishing Fail%n%s", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-
     }
 
 
